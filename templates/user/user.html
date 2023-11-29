@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Instagram Model Homepage</title>
+
+</head>
+
+<body>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 text-center">
+        <img id="img" alt="Profile Picture" class="profile-img mb-3">
+        <div id="name"></div>
+        <p>Follow me for daily fashion inspiration! 🌟</p>
+        <div class="mb-3">
+          <a href="http://localhost:3000/" class="btn btn-primary mr-2">Home</a>
+          <span id="upload">
+          </span>
+        </div>
+        <hr>
+        <h3>Recent Posts</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row" id="card">
+
+    </div>
+
+  </div>
+
+  <script>
+    let id = location.href.split("?")[1];
+    function get_profile() {
+      fetch(`http://localhost:3000/get_profile/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          document.getElementById("img").src = data.profile
+          document.getElementById("name").innerHTML = `<h1>Hello : ${data.name}<h1>`
+          document.getElementById("upload").innerHTML = `<a href="http://localhost:3000/user/post_uplod.html?${data._id}" class="btn btn-secondary">Uplod blog</a>`
+        })
+    }
+
+    function get_post() {
+      fetch(`http://localhost:3000/get_post/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("card").innerHTML = null;
+          data.map((item) => {
+            let card = `        <div class="col-lg-4 mb-5">
+            <div class="card">
+                <img src="http://localhost:3000/image/${item.post.filename}" class="card-img-top img-size" alt="Instagram Post">
+                <div class="card-body">
+                  <h5 class="card-title">Beautiful Sunset</h5>
+                  <p class="card-text">${item.caption}</p>
+                  <a href="#" class="btn btn-primary">Like</a>
+                  <a href="#" class="btn btn-secondary">Comment</a>
+                </div>
+              </div>
+        </div>`
+        console.log(data);
+        document.getElementById("card").innerHTML += card;
+          })
+        })
+
+    }
+
+    get_post()
+    get_profile()
+  </script>
+</body>
+
+</html>
