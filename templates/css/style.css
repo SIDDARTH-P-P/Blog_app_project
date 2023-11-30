@@ -2,6 +2,7 @@
 
 
 .i{
+  border: solid 3px red;
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -40,4 +41,8 @@ body {
 .mr{
     margin-top: 10px;
     margin-right: 20px;
+}
+
+.mh1{
+  padding-top: 100px;
 }

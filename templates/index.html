@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Blog Site</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -20,10 +20,10 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <form class="form-inline">
-              <input class="form-control mr-sm-2 mr" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2 mr " type="search" placeholder="Search" aria-label="Search">
             </form>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="logout">
             <a class="nav-link mr" href="http://localhost:3000/login_page/login_v1/login.html">Login</a>
           </li>
           <li class="nav-item" id="user">
@@ -33,17 +33,15 @@
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <!-- Main content for the home page -->
+  <div class="container mt-4 mh1">
     <h1>Welcome to Our Blog!</h1>
-    <!-- Your blog content goes here -->
   </div>
 
 
 
   <div class="container mt-4">
     <div class="row">
-      <div class="col-lg-2"> </div>
+      <div class="col-lg"> </div>
       <div class="col-lg-8">
         <h2>Featured Posts</h2>
 
@@ -51,7 +49,7 @@
 
         </div>
       </div>
-      <div class="col-lg-2"> </div>
+      <div class="col-lg"> </div>
     </div>
   </div>
 
@@ -60,30 +58,40 @@
     let id = localStorage.getItem("id")
 
     function get_profile() {
+      if(!id) return;
       fetch(`http://localhost:3000/get_profile/${id}`)
         .then(res => res.json())
         .then(data => {
           if (token) {
             document.getElementById("user").innerHTML = ` <a class="nav-link " href="http://localhost:3000/user/user.html?${id}"><img class="img" src="${data.profile}" alt=""></a>`
+            document.getElementById("logout").innerHTML = `<h5 class="nav-link mr btn btn-danger fs-3" onclick="logout()">Logout</h5>`
           }
         })
     }
 
+    function logout(){
+      let conf= confirm("Are You Sure do you want to logout")
+      if(conf){
+        localStorage.removeItem("key");
+        localStorage.removeItem("id")
+        location.href = `/`
+      }
+    }
     function blogs() {
       let array = [];
       fetch(`http://localhost:3000/get_blogs`)
         .then(res => res.json())
         .then(data => {
           data.map((item) => {
-            let card = `            <div class="col-lg-4 mb-5">
+            let card = `            <div class="col-lg-6 mb-5 card_hight">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                      <img src="${item.user.profile}" alt="Icon" class=" i mr-3 pt-2">
+                      <img src="${item.user.profile}" alt="Icon" class=" i mr-3">
                       <div>
                         <p class="username text-muted mb-0 pt-1">${item.user.name}</p>
                       </div>
                     </div>
-                    <img src="http://localhost:3000/image/${item.post.filename}" alt="Post Image" class="card-img-top">
+                    <img src="http://localhost:3000/image/${item.post.filename}" alt="Post Image" class="card-img-top ">
                     <div class="card-body">
                       <p class="card-text">${item.caption}</p>
                     </div>

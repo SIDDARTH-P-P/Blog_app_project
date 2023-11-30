@@ -65,3 +65,10 @@ body {
   background-color: white;
   margin-bottom: 22px;
 }
+.pd{
+  padding-top: 480px;
+}
+.bdr{
+  border: double 3px rgb(125, 118, 118);
+  border-radius: 10px;
+}
