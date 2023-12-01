@@ -21,8 +21,9 @@ router.route("/get_profile/:id").get(fun.get_profile);
 
 router.route("/update/:id").post(uploder.single("post"),fun.update_post);
 router.route("/get_post_update/:id").get(fun.get_post_update);
-
 router.route("/del/:id").get(fun.del);
+
+router.route("/update_profile/:id").post(fun.update_profile)
 
 router.route("/get_post/:id").get(fun.get_post);
 router.route("/image/:file").get(fun.get_image);

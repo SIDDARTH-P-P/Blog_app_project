@@ -20,11 +20,11 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <form class="form-inline">
-              <input class="form-control mr-sm-2 mr " type="search" placeholder="Search" aria-label="Search">
+              <input id="search" oninput="check()" class="form-control mr-sm-5 mr" type="search" placeholder="Search" aria-label="Search">
             </form>
           </li>
           <li class="nav-item" id="logout">
-            <a class="nav-link mr" href="http://localhost:3000/login_page/login_v1/login.html">Login</a>
+            <a class="nav-link mr form-control mb-3 bg-success" href="http://localhost:3000/login_page/login_v1/login.html">Login</a>
           </li>
           <li class="nav-item" id="user">
           </li>
@@ -37,16 +37,14 @@
     <h1>Welcome to Our Blog!</h1>
   </div>
 
-
-
   <div class="container mt-4">
     <div class="row">
       <div class="col-lg"> </div>
       <div class="col-lg-8">
         <h2>Featured Posts</h2>
-
-        <div class="row"  id="card">
-
+        <div id="mkdiv"> 
+          <div class="row"  id="card">
+          </div>
         </div>
       </div>
       <div class="col-lg"> </div>
@@ -54,6 +52,7 @@
   </div>
 
   <script>
+    let searcharray = null;
     let token = localStorage.getItem("token")
     let id = localStorage.getItem("id")
 
@@ -63,8 +62,8 @@
         .then(res => res.json())
         .then(data => {
           if (token) {
-            document.getElementById("user").innerHTML = ` <a class="nav-link " href="http://localhost:3000/user/user.html?${id}"><img class="img" src="${data.profile}" alt=""></a>`
-            document.getElementById("logout").innerHTML = `<h5 class="nav-link mr btn btn-danger fs-3" onclick="logout()">Logout</h5>`
+            document.getElementById("user").innerHTML = ` <a class="nav-link" href="http://localhost:3000/user/user.html?${id}"><img class="img" src="${data.profile}" alt=""></a>`
+            document.getElementById("logout").innerHTML = `<h5 class=" form-control nav-link mr bg-danger" onclick="logout()">Logout</h5>`
           }
         })
     }
@@ -78,10 +77,10 @@
       }
     }
     function blogs() {
-      let array = [];
       fetch(`http://localhost:3000/get_blogs`)
         .then(res => res.json())
         .then(data => {
+          searcharray = data;
           data.map((item) => {
             let card = `            <div class="col-lg-6 mb-5 card_hight">
                 <div class="card">
@@ -104,6 +103,31 @@
         })
     }
 
+    function check(){
+      let value = document.getElementById("search").value
+      array =  searcharray.filter(item => item.user.name.toLowerCase().includes(value.toLowerCase()))
+      document.getElementById("mkdiv").innerHTML = `<div class="row" id="card">`
+      array.map((item) => {
+            let card = `            <div class="col-lg-6 mb-5 card_hight">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <img src="${item.user.profile}" alt="Icon" class=" i mr-3">
+                      <div>
+                        <p class="username text-muted mb-0 pt-1">${item.user.name}</p>
+                      </div>
+                    </div>
+                    <img src="http://localhost:3000/image/${item.post.filename}" alt="Post Image" class="card-img-top ">
+                    <div class="card-body">
+                      <p class="card-text">${item.caption}</p>
+                    </div>
+                  </div>
+            </div>
+`
+                  document.getElementById("card").innerHTML  += card
+
+
+          })
+    }
 
     blogs()
 

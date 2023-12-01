@@ -75,21 +75,21 @@
             let password = formdata.get("password")
             let base64 = await convert(profile);
             console.log(base64);
-            fetch(`http://localhost:3000/register`,{
-                method:"post",
-                headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({name,email,password,profile:base64})
+            fetch(`http://localhost:3000/register`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password, profile: base64 })
             })
-            .then(res =>{
-                if(res.status == 403){
-                    alert("User already existe Use other username")
-                    return location.href = `http://localhost:3000/register/register/register.html`
-                }
-                else if (res.status == 200){
-                    alert("Account successfully created")
-                    return location.href = `http://localhost:3000/login_page/login_v1/login.html`
-                }
-            })
+                .then(res => {
+                    if (res.status == 403) {
+                        alert("User already existe Use other username")
+                        return location.href = `http://localhost:3000/register/register/register.html`
+                    }
+                    else if (res.status == 200) {
+                        alert("Account successfully created")
+                        return location.href = `http://localhost:3000/login_page/login_v1/login.html`
+                    }
+                })
 
         }
 

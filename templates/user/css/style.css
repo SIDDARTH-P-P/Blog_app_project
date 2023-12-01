@@ -12,63 +12,66 @@ body {
   background: linear-gradient(-135deg, #c850c0, #4158d0);
 
 }
+
 .profile-img {
   max-width: 200px;
   border-radius: 50%;
 }
 
-.img-size{
+.img-size {
   height: 300px;
 }
 
 
 .custom-file-input:lang(en)~.custom-file-label::after {
-    content: "Browse";
+  content: "Browse";
 }
 
 .custom-file {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .custom-file-input {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .image-preview {
-    width: 400px;
-    height: 400px;
-    border: 2px dashed #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
+  width: 400px;
+  height: 400px;
+  border: 2px dashed #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .image-preview img {
-    width: 400px;
-    height: 400px;
-    object-fit: cover;
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
 }
 
 .image-preview .preview-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #aaa;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #aaa;
 }
 
-.br{
+.br {
   border-radius: 7px;
   padding-bottom: 45px;
   background-color: white;
   margin-bottom: 22px;
 }
-.pd{
+
+.pd {
   padding-top: 480px;
 }
-.bdr{
+
+.bdr {
   border: double 3px rgb(125, 118, 118);
   border-radius: 10px;
 }

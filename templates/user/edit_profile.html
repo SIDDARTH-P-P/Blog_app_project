@@ -13,23 +13,24 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-6 offset-md-3 br">
-                <h2 class="mb-4 text-center mt-4">Edit your Post</h2>
+                <h2 class="mb-4 text-center mt-4">Edit your Profile</h2>
                 <div class="image-preview mx-auto mb-4">
                     <span class="preview-text">Image Preview</span>
                 </div>
                 <form onsubmit="update_post(event)">
                     <div class="mb-3">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="imageInput" name="post" accept="image/*"
+                            <input type="file" class="custom-file-input" id="imageInput" name="img" accept="image/*"
                                 required>
                             <label class="custom-file-label" for="imageInput">Choose image</label>
                         </div>
                         <div class="custom-file">
-                            <input class="form-control" name="caption" type="text" id="caption" placeholder="Text  your caption">
+                            <input class="form-control" name="name" type="text" id="caption"
+                                placeholder="Text  your caption">
                         </div>
                     </div>
                     <div class="mb-3 d-grid">
-                        <button type="submit" class="btn btn-primary btn-block">Edit and Upload</button>
+                        <button type="submit" class="btn btn-primary btn-block">Edit and Update Profile</button>
                     </div>
                 </form>
             </div>
@@ -39,39 +40,55 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let id = location.href.split("?")[1];
-        function get_update_post(){
-            fetch(`http://localhost:3000/get_post_update/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                // document.querySelector('.image-preview').innerHTML = `<img src="http://localhost:3000/image/${data.post.filename}" alt="Image Preview" />`;
-                document.getElementById("caption").value = data.caption
-                document.getElementById("imageInput").file = `http://localhost:3000/image/${data.post.filename}`
-                console.log(data)
-            })
+        function get_update_post() {
+            fetch(`http://localhost:3000/get_profile/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.querySelector('.image-preview').innerHTML = `<img src="${data.profile}" alt="Image Preview" />`;
+                    document.getElementById("caption").value = data.name
+                    // document.getElementById("imageInput").file = `http://localhost:3000/image/${data.post.filename}`
+                    console.log(data)
+                })
         }
 
-        function update_post(event){
+        async function update_post(event) {
             event.preventDefault();
             let formdata = new FormData(event.target)
-            let caption = formdata.get("caption")
-            fetch(`http://localhost:3000/update/${id}`,{
-                method:"post",
-                body:formdata
+            let name = formdata.get("name");
+            let img = formdata.get("img");
+            let profile = await convert(img)
+            fetch(`http://localhost:3000/update_profile/${id}`, {
+                method: "post",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({ profile, name })
             })
-            .then(res =>{
-                if(res.status == 403){
-                    return alert("Error Updating")
-                }
-                return res.json()
-            })
-            .then(data => {
-                alert(data.msg);
-                return  location.href = `http://localhost:3000/user/user.html?${data.userid}`
-            })
+                .then(res => {
+                    if (res.status == 403) {
+                        return alert("Error Updating")
+                    }
+                    return res.json()
+                })
+                .then(data => {
+                    alert("Successfully Update Profile");
+                    return location.href = `http://localhost:3000/user/user.html?${id}`
+                })
         }
 
         get_update_post()
 
+
+        function convert(file) {
+            return new Promise((res, rej) => {
+                let read = new FileReader();
+                read.readAsDataURL(file)
+                read.onload = () => {
+                    res(read.result)
+                }
+                read.onerror = (error) => {
+                    rej(error)
+                }
+            })
+        }
 
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.querySelector('.image-preview');
@@ -98,4 +115,3 @@
 </body>
 
 </html>
-

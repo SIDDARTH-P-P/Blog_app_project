@@ -22,7 +22,7 @@
           <span id="upload">
           </span>
           <span>
-            <a href="http://localhost:3000/" class="btn btn-primary mr-2">Edit</a>
+            <a id="edit" class="btn btn-primary mr-2">Edit</a>
           </span>
         </div>
         <hr>
@@ -40,8 +40,9 @@
 
   <script>
     let id = location.href.split("?")[1];
+    document.getElementById("edit").href = `http://localhost:3000/user/edit_profile.html?${id}`
     function get_profile() {
-      if(!id) return;
+      if (!id) return;
       fetch(`http://localhost:3000/get_profile/${id}`)
         .then(res => res.json())
         .then(data => {
@@ -63,27 +64,27 @@
                 <div class="card-body">
                   <h5 class="card-title"><b>----------------------------------------------</b></h5>
                   <p class="card-text">${item.caption}</p>
-                  <a href="http://localhost:3000/user/update_post.html?${item._id}" class="btn btn-primary">Edit</a>
-                  <button onclick="del('${item._id}')" class="btn btn-secondary">Comment</button>
+                  <a href="http://localhost:3000/user/update_post.html?${item._id}" class="btn btn-warning">Edit</a>
+                  <button onclick="del('${item._id}')" class="btn btn-danger">Delete</button>
                 </div>
               </div>
         </div>`
-        document.getElementById("card").innerHTML += card;
+            document.getElementById("card").innerHTML += card;
           })
         })
 
     }
-    function del(id){
+    function del(id) {
       let cnf = confirm("Are you sure you want to delete this post")
-      if(cnf){
+      if (cnf) {
         fetch(`http://localhost:3000/del/${id}`)
-        .then(res => {
-          if(res.status == 202){
-            alert("Successfully Deleted")
-            return location.reload();
-          }
-          alert("Error Deleting");
-        })
+          .then(res => {
+            if (res.status == 202) {
+              alert("Successfully Deleted")
+              return location.reload();
+            }
+            alert("Error Deleting");
+          })
       }
     }
     get_post()
